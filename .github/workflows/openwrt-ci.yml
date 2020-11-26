@@ -1,11 +1,11 @@
-#
-# This is free software, lisence use MIT.
-# 
-# Copyright (C) 2019 P3TERX <https://p3terx.com>
-# Copyright (C) 2020 KFERMercer <KFER.Mercer@gmail.com>
-# 
-# <https://github.com/KFERMercer/OpenWrt-CI>
-#
+  #
+  # This is free software, lisence use MIT.
+  # 
+  # Copyright (C) 2019 P3TERX <https://p3terx.com>
+  # Copyright (C) 2020 KFERMercer <KFER.Mercer@gmail.com>
+  # 
+  # <https://github.com/KFERMercer/OpenWrt-CI>
+  #
 
 name: OpenWrt-CI
 
@@ -77,7 +77,7 @@ jobs:
 
           #
           # 在 cat >> .config <<EOF 到 EOF 之间粘贴你的编译配置, 需注意缩进关系
-          # 例如:
+          # 
           # 编译x64固件:
           cat >> .config <<EOF
           CONFIG_TARGET_x86=y
@@ -128,13 +128,22 @@ jobs:
           CONFIG_VIRTIO_BLK=y
           CONFIG_VIRTIO_CONSOLE=y
           CONFIG_VIRTIO_MMIO=y
+          # CONFIG_VIRTIO_MMIO_CMDLINE_DEVICES is not set
           CONFIG_VIRTIO_NET=y
           CONFIG_VIRTIO_PCI=y
           CONFIG_VIRTIO_PCI_LEGACY=y
+          # CONFIG_VIRTIO_VSOCKETS is not set
+          EOF
+          # 取消FTP服务器:
+          cat >> .config <<EOF
+          # CONFIG_PACKAGE_luci-app-vsftpd is not set
+          EOF
+          # 取消迅雷快鸟:
+          cat >> .config <<EOF
+          # CONFIG_PACKAGE_luci-app-xlnetacc is not set
           EOF
           # 常用LuCI插件选择:
           cat >> .config <<EOF
-          CONFIG_PACKAGE_luci-app-accesscontrol=y
           CONFIG_PACKAGE_luci-app-adblock=y
           CONFIG_PACKAGE_luci-app-adbyby-plus=y
           CONFIG_PACKAGE_luci-app-adguardhome=y
@@ -156,15 +165,12 @@ jobs:
           CONFIG_PACKAGE_luci-app-statistics=y
           CONFIG_PACKAGE_luci-app-ttyd=y
           CONFIG_PACKAGE_luci-app-upnp=y
-          CONFIG_PACKAGE_luci-app-v2ray-server=y
           CONFIG_PACKAGE_luci-app-vlmcsd=y
-          CONFIG_PACKAGE_luci-app-vnstat=y
           CONFIG_PACKAGE_luci-app-webadmin=y
           CONFIG_PACKAGE_luci-app-wrtbwmon=y
           CONFIG_PACKAGE_luci-app-wol=y
           CONFIG_PACKAGE_luci-app-passwall=y
           CONFIG_PACKAGE_luci-app-smartdns=y
-          CONFIG_PACKAGE_luci-app-gost=y
           CONFIG_PACKAGE_luci-app-advancedsetting=y
           CONFIG_PACKAGE_luci-app-openclash=y
           CONFIG_PACKAGE_luci-app-zerotier=y
@@ -175,10 +181,7 @@ jobs:
           CONFIG_PACKAGE_luci-theme-argon=y
           CONFIG_PACKAGE_luci-theme-netgear=y
           CONFIG_PACKAGE_luci-theme-argon_new=y
-          CONFIG_PACKAGE_luci-theme-atmaterial=y
-          CONFIG_PACKAGE_luci-theme-opentomcat=y
-          CONFIG_PACKAGE_luci-theme-opentomato=y
-          
+          CONFIG_PACKAGE_luci-theme-edge=y
           EOF
           # 常用软件包:
           cat >> .config <<EOF
@@ -190,12 +193,11 @@ jobs:
           CONFIG_PACKAGE_vim-fuller=y
           CONFIG_PACKAGE_wget=y
           EOF
-          # 取消编译VMware镜像以及镜像填充 (不要删除被缩进的注释符号):
+          # # 取消编译VMware镜像以及镜像填充 (不要删除被缩进的注释符号):
           # cat >> .config <<EOF
           # # CONFIG_TARGET_IMAGES_PAD is not set
           # # CONFIG_VMDK_IMAGES is not set
           # EOF
-
           #
           # ===============================================================
           # 
