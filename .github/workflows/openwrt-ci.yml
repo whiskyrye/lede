@@ -119,6 +119,19 @@ jobs:
           CONFIG_PACKAGE_kmod-usb2-pci=y
           CONFIG_PACKAGE_kmod-usb3=y
           EOF
+          # Virtio支持:
+          cat >> .config <<EOF
+          CONFIG_HW_RANDOM_VIRTIO=y
+          CONFIG_SCSI_VIRTIO=y
+          CONFIG_VIRTIO=y
+          CONFIG_VIRTIO_BALLOON=y
+          CONFIG_VIRTIO_BLK=y
+          CONFIG_VIRTIO_CONSOLE=y
+          CONFIG_VIRTIO_MMIO=y
+          CONFIG_VIRTIO_NET=y
+          CONFIG_VIRTIO_PCI=y
+          CONFIG_VIRTIO_PCI_LEGACY=y
+          EOF
           # 常用LuCI插件选择:
           cat >> .config <<EOF
           CONFIG_PACKAGE_luci-app-accesscontrol=y
