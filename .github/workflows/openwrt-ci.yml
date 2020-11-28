@@ -58,18 +58,28 @@ jobs:
 
           df -h
           
-          # 加载解锁网易云灰色歌曲
-      - name: unblockmusic
+          # 更新lean源码
+      - name: updatecode
         run: |
-          mkdir openwrt-packages
-          cd openwrt-packages
-          git clone https://github.com/maxlicheng/luci-app-unblockmusic.git
+          git remote add openwrt https://github.com/coolsnowwolf/lede.git
+          git pull openwrt master
+          git remote -v
 
       - name: Update feeds
         run: |
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
+           # 加载插件包
+      - name: mount packages
+        run: |
+          rm -rf luci-theme-argon
+          mkdir openwrt-packages
+          cd openwrt-packages
+          git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git 
+          git clone https://github.com/maxlicheng/luci-app-unblockmusic.git
+          git clone https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom.git
+          
       - name: Generate configuration file
         run: |
           rm -f ./.config*
@@ -134,14 +144,6 @@ jobs:
           CONFIG_VIRTIO_PCI_LEGACY=y
           # CONFIG_VIRTIO_VSOCKETS is not set
           EOF
-          # 取消FTP服务器:
-          cat >> .config <<EOF
-          # CONFIG_PACKAGE_luci-app-vsftpd is not set
-          EOF
-          # 取消迅雷快鸟:
-          cat >> .config <<EOF
-          # CONFIG_PACKAGE_luci-app-xlnetacc is not set
-          EOF
           # 常用LuCI插件选择:
           cat >> .config <<EOF
           CONFIG_PACKAGE_luci-app-adblock=y
@@ -157,6 +159,8 @@ jobs:
           CONFIG_PACKAGE_luci-app-jd-dailybonus=y        
           CONFIG_PACKAGE_luci-app-minidlna=y
           CONFIG_PACKAGE_luci-app-ntpc=y
+          #CONFIG_PACKAGE_luci-app-samba is not set
+          #CONFIG_PACKAGE_luci-app-samba4 is not set
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Kcptun=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Shadowsocks=y
           CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_ShadowsocksR_Server=y
@@ -166,8 +170,9 @@ jobs:
           CONFIG_PACKAGE_luci-app-ttyd=y
           CONFIG_PACKAGE_luci-app-upnp=y
           CONFIG_PACKAGE_luci-app-vlmcsd=y
+          # CONFIG_PACKAGE_luci-app-vsftpd is not set
           CONFIG_PACKAGE_luci-app-webadmin=y
-          CONFIG_PACKAGE_luci-app-wrtbwmon=y
+          # CONFIG_PACKAGE_luci-app-wrtbwmon is not set
           CONFIG_PACKAGE_luci-app-wol=y
           CONFIG_PACKAGE_luci-app-passwall=y
           CONFIG_PACKAGE_luci-app-smartdns=y
@@ -175,13 +180,15 @@ jobs:
           CONFIG_PACKAGE_luci-app-openclash=y
           CONFIG_PACKAGE_luci-app-zerotier=y
           CONFIG_PACKAGE_luci-app-unblockmusic=y
+          # CONFIG_PACKAGE_luci-app-xlnetacc is not set
           EOF
           # LuCI主题:
           cat >> .config <<EOF
           CONFIG_PACKAGE_luci-theme-argon=y
-          CONFIG_PACKAGE_luci-theme-netgear=y
           CONFIG_PACKAGE_luci-theme-argon_new=y
           CONFIG_PACKAGE_luci-theme-edge=y
+          CONFIG_PACKAGE_luci-theme-infinityfreedom=y
+          CONFIG_PACKAGE_luci-theme-opentopd=y
           EOF
           # 常用软件包:
           cat >> .config <<EOF
