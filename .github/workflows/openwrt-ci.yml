@@ -56,15 +56,6 @@ jobs:
           # ln -s /mnt/openwrt/feeds ./feeds
           # ln -s /mnt/openwrt/staging_dir ./staging_dir
 
-          df -h
-          
-          # 更新lean源码
-      - name: updatecode
-        run: |
-          git remote add openwrt https://github.com/coolsnowwolf/lede.git
-          git pull openwrt master
-          git remote -v
-          
            # 加载插件包
       - name: mount packages
         run: |
@@ -74,6 +65,9 @@ jobs:
           git clone -b 18.06 https://github.com/jerrykuku/luci-theme-argon.git 
           git clone https://github.com/maxlicheng/luci-app-unblockmusic.git
           git clone https://github.com/xiaoqingfengATGH/luci-theme-infinityfreedom.git
+          
+
+          df -h
           
       - name: Update feeds
         run: |
